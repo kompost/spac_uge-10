@@ -1,0 +1,25 @@
+@startuml
+object User {
+    UserId
+    Password
+    UserName
+    Chatrooms[]
+}
+
+object Chatroom {
+    name
+    ChatroomId
+}
+
+object Message {
+    MessageId
+    UserId
+    ChatroomId
+    Message
+    TimeStamp
+}
+
+User - "*" Chatroom
+Message -- User
+Message -- Chatroom
+@enduml
