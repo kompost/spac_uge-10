@@ -6,6 +6,10 @@ object User {
     Role
     Chatrooms[]
 }
+object frends {
+    User1Id
+    User2Id
+}
 
 object Chatroom {
     name
@@ -23,4 +27,5 @@ object Message {
 User - "*" Chatroom
 Message -- User
 Message -- Chatroom
+frends "*"-"*" User
 @enduml
