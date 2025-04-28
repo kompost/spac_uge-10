@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { HelloWorldService } from './hello-world.service';
 
 @Controller('hello-world')
@@ -8,5 +8,10 @@ export class HelloWorldController {
     @Get('test')
     getHello(): string {
         return this.hello.getHello();
+    }
+    
+    @Get(':id')
+    getById(@Param() params:any) {
+        console.log(`id: ${params.id}`) 
     }
 }
