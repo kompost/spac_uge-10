@@ -3,6 +3,7 @@ object User {
     UserId
     Password
     UserName
+    Role
     Chatrooms[]
 }
 
