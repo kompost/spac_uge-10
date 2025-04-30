@@ -1,0 +1,17 @@
+volumes:
+  database:
+    driver: local
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: spac-uge-10
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: my_db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - database:/var/lib/postgresql/data
