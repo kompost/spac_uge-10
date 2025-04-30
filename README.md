@@ -105,3 +105,20 @@ This is week 10 project of spac - a chat program!
   * prisma
 * view js
 * postgres
+
+# sp1
+- predefined users
+- login fra et navn
+  - hvis det ikke eksistere lavers der en ny burger
+  - hænte chats for de speifike brugere
+- lave insæteelse af nye beskeder
+- websocket
+  - forbindelse 
+  - sænder msg fra aktiv user til spesifikt chatroom
+CRUD:
+- Create
+  - message
+- Read
+  - user
+  - chatroom
+    - messages
