@@ -14,18 +14,18 @@ object frends {
 object Chatroom {
     name
     ChatroomId
+    Message[]
 }
 
 object Message {
     MessageId
     UserId
-    ChatroomId
     Message
     TimeStamp
 }
 
 User - "*" Chatroom
 Message -- User
-Message -- Chatroom
+Message "*"-- Chatroom
 frends "*"-"*" User
 @enduml
