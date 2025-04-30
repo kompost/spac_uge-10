@@ -1,6 +1,7 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { HelloWorldService } from './hello-world.service';
 import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
+import { User } from '@prisma/client';
 
 @Controller('hello-world')
 export class HelloWorldController {
@@ -18,10 +19,10 @@ export class HelloWorldController {
         status: 200,
         description: 'all gucci',
     })
-    getHello(
+    async getHello(
         @Param('name') name: string,
-    ): string {
-        return this.hello.getHello() + name;
+    ): Promise<User[]> {
+        return await this.hello.getHello();
     }
     
     @Get(':id')

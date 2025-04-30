@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { HelloWorldModule } from './hello-world/hello-world.module';
-import { MessageModule } from './message/message.module';
+import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
-    imports: [HelloWorldModule, MessageModule],
+    imports: [HelloWorldModule, PrismaModule],
     controllers: [],
     providers: [],
 })
