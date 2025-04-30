@@ -1,10 +1,9 @@
 volumes:
   database:
-    driver: local
 
 services:
   postgres:
-    image: postgres:15
+    image: postgres:latest
     container_name: spac-uge-10
     restart: always
     ports:
