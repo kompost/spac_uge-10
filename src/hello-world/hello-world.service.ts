@@ -10,7 +10,5 @@ export class HelloWorldService {
         const users = await this.prisma.user.findMany();
         return users;
     }
-    getChatroomMessages(chatroomId:string) : object[]{
-        throw new NotImplementedException()
-    }
+
 }

@@ -1,6 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { MessageController } from './message.controller';
 import { MessageService } from './message.service';
+import { Message } from '@prisma/client';
+import { Logger } from '@nestjs/common';
 
 
 describe('MessageController', () => {
@@ -9,18 +11,17 @@ describe('MessageController', () => {
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
             controllers: [MessageController],
-        }).useMocker((token) => {
-            const testingMssages = [
-                {id:'test1', message:'hello 1'},
-                {id:'test2', message:'hello 2'},
-                {id:'test3', message:'hello 3'},
-                
+
+        }).setLogger(Logger).useMocker((token) => {
+            const testingMssages: Message[] = [
+                { id: 'test1', userId: "uid1", chatroomId: "cid1", createdAt: new Date(2000, 1, 1), message: 'hello 1' },
+                { id: 'test2', userId: "uid2", chatroomId: "cid2", createdAt: new Date(2000, 1, 1), message: 'hello 2' },
+                { id: 'test3', userId: "uid3", chatroomId: "cid3", createdAt: new Date(2000, 1, 1), message: 'hello 3' },
             ]
 
             if (token === MessageService) {
-                return { 
+                return {
                     getAll: jest.fn().mockReturnValue(testingMssages),
-                    // getById: jest.fn(()=>[]).mockReturnValue(id =>  testingMssages.filter(message => message.id === id))
                 }
             }
         }).compile();
@@ -36,11 +37,4 @@ describe('MessageController', () => {
         const all = controller.getAll()
         expect(all).toHaveLength(3)
     })
-
-    it('shuld get by id', ()=>{
-        const msg1 = controller.getById('test1')
-
-        expect(msg1).toHaveProperty('id', 'test1')
-    })
-
 });

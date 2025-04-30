@@ -1,5 +1,6 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { MessageService } from './message.service';
+import { Message } from '@prisma/client';
 
 @Controller('message')
 export class MessageController {
@@ -8,15 +9,19 @@ export class MessageController {
 
     @Get('test')
     getHello() {
-        var tmp: testObject = {
+        var tmp: Message = {
             id: "test",
-            name: "hello"
+            userId: "cma3ts3nl0000vo9cj42uh6c6",
+            chatroomId: "234",
+            createdAt: new Date(),
+            message: "hello"
         }
         return tmp
     }
 
     @Get(':id')
-    getById(@Param() params: any) {
+    getById(@Param() params: any) : Message {
+        console.log(params.id)
         return this.service.getById(params.id)
     }
 
