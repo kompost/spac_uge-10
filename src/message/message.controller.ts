@@ -3,11 +3,12 @@ import { MessageService } from './message.service';
 
 @Controller('message')
 export class MessageController {
-    constructor(private readonly hello: MessageService) { }
+
+    constructor(private readonly service: MessageService) { }
 
     @Get('test')
     getHello() {
-        var tmp : testObject =  {
+        var tmp: testObject = {
             id: "test",
             name: "hello"
         }
@@ -16,7 +17,12 @@ export class MessageController {
 
     @Get(':id')
     getById(@Param() params: any) {
-        console.log(`id: ${params.id}`)
+        return this.service.getById(params.id)
+    }
+
+    @Get()
+    getAll() : [] {
+        return this.service.getAll();
     }
 }
 class testObject {

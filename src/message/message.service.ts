@@ -2,10 +2,11 @@ import { Injectable, NotImplementedException } from '@nestjs/common';
 
 @Injectable()
 export class MessageService {
-    getHello(): string {
-        return 'Hello World!';
+    getById(id: any) {
+        throw new Error('Method not implemented.');
     }
-    getChatroomMessages(chatroomId: string): object[] {
-        throw new NotImplementedException()
+    getAll() : [] {
+        throw new Error('Method not implemented.');
     }
+
 }
