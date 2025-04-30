@@ -53,7 +53,7 @@ model Message {
   userId     String
   Chatroom   Chatroom @relation(fields: [chatroomId], references: [id])
   chatroomId String
-  Message    String
+  message    String
 
   createdAt DateTime @default(now())
 }
