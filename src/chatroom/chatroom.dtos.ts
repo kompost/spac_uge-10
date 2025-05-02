@@ -6,7 +6,7 @@ export class ChatroomWithMessagesDTO {
     id: string;
     @IsString()
     name: string;
-    
+
     messages: Message[];
 }
 export class ChatroomWithUsersDTO {
