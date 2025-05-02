@@ -9,7 +9,7 @@ import { Socket, Server } from 'socket.io';
 @WebSocketGateway({ cors: true })
 export class ChatGateway {
     constructor(
-        private readonly server: Server, // Inject the server instance
+        // private readonly server: Server, // Inject the server instance
     ) { }
 
     handleConnection(client: Socket) {
