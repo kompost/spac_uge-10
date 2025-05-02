@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { HelloWorldModule } from './hello-world/hello-world.module';
 import { PrismaModule } from './prisma/prisma.module';
+import { MessageModule } from './message/message.module';
 import { ChatGateway } from './events/events.gateway';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { UserModule } from './user/user.module';
@@ -12,6 +13,7 @@ import { ChatroomModule } from './chatroom/chatroom.module';
         HelloWorldModule,
         PrismaModule,
         UserModule,
+        MessageModule,
         ChatroomModule,
         ServeStaticModule.forRoot({
             rootPath: join(process.cwd(), 'public'),

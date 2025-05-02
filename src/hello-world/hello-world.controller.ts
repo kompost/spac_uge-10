@@ -22,4 +22,9 @@ export class HelloWorldController {
     async getHello(@Param('name') name: string): Promise<User[]> {
         return await this.hello.getHello();
     }
+
+    @Get(':id')
+    getById(@Param() params: any) {
+        console.log(`id: ${params.id}`);
+    }
 }

@@ -19,13 +19,13 @@ async function main() {
             password: 'test',
         },
     });
+
     await prisma.user.create({
         data: {
             username: 'Alice',
             password: 'test',
         },
     });
-    
     
     const chat = await prisma.chatroom.create({
         data:{
@@ -41,6 +41,7 @@ async function main() {
             message: "test message 1"
         }
     })
+
 
 }
 
