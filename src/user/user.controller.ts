@@ -24,4 +24,11 @@ export class UserController {
             );
         }
     }
+
+    async isPasswordCorrect(
+        username: string,
+        password: string,
+    ): Promise<boolean> {
+        return this.service.isPasswordCorrect(username, password);
+    }
 }
