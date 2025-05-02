@@ -5,12 +5,14 @@ import { ChatGateway } from './events/events.gateway';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { UserModule } from './user/user.module';
 import { join } from 'path';
+import { ChatroomModule } from './chatroom/chatroom.module';
 
 @Module({
     imports: [
         HelloWorldModule,
         PrismaModule,
         UserModule,
+        ChatroomModule,
         ServeStaticModule.forRoot({
             rootPath: join(process.cwd(), 'public'),
         }),
@@ -18,4 +20,4 @@ import { join } from 'path';
     controllers: [],
     providers: [ChatGateway],
 })
-export class AppModule { }
+export class AppModule {}
