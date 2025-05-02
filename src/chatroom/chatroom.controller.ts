@@ -7,7 +7,9 @@ export class ChatroomController {
     constructor(private readonly service: ChatroomService) { }
 
     @Get(':id')
-    getAllMessages(@Param('id') id:string){
-        this.service.getAllMessages(id)
+    async getAllMessages(@Param('id') id:string){
+        const chatroom = await this.service.getChatroom(id)
+        // chatroom.messages
+        console.log(chatroom.messages)
     }
 }
