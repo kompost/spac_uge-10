@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Chat</title>
+</head>
+
+<body>
+  <h1>Socket.IO Chat</h1>
+  <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+  <script>
+    const socket = io();
+
+    socket.emit('joinRoom', 'room1');
+    socket.on('joinedRoom', (room) => {
+      console.log('Joined', room);
+    });
+
+    socket.emit('chatToServer', {
+      room: 'room1',
+      message: 'Hello from HTML!',
+    });
+
+    socket.on('chatToClient', (data) => {
+      console.log(`${data.sender}: ${data.message}`);
+    });
+  </script>
+</body>
+
+</html>
