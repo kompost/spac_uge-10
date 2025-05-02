@@ -43,8 +43,7 @@ model Chatroom {
   id       String    @id @default(cuid())
   name     String
   messages Message[]
-  User     User?     @relation(fields: [userId], references: [id])
-  userId   String?
+  users    User[]
 }
 
 model Message {
