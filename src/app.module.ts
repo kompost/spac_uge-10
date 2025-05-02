@@ -20,4 +20,4 @@ import { ChatroomModule } from './chatroom/chatroom.module';
     controllers: [],
     providers: [ChatGateway],
 })
-export class AppModule { }
+export class AppModule {}

@@ -8,4 +8,4 @@ import { PrismaModule } from 'src/prisma/prisma.module';
     providers: [ChatroomService],
     controllers: [ChatroomController],
 })
-export class ChatroomModule { }
+export class ChatroomModule {}
