@@ -15,7 +15,7 @@ async function main() {
             password: 'test',
         },
     });
-
+    
 }
 
 main()

@@ -1,13 +1,30 @@
 import { Injectable, NotImplementedException } from '@nestjs/common';
-import { Message } from '@prisma/client';
+import { Message, User } from '@prisma/client';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { CreateMessageDTO } from './message.dtos';
 
 @Injectable()
 export class MessageService {
-    getById(id: any) :Message{
-        throw new Error('Method not implemented.');
+    constructor(private readonly prisma: PrismaService) { }
+
+    async getById(id: string): Promise<Message> {
+        return await this.prisma.message.findFirstOrThrow({
+            where: {
+                id
+            }
+        })
     }
-    getAll() : [] {
-        throw new Error('Method not implemented.');
+    async getAll(): Promise<Message[]> {
+        return await this.prisma.message.findMany()
+    }
+
+    async addMessage(createMessageDTO: CreateMessageDTO) {
+        this.prisma.message.create({
+            data: {
+                ...createMessageDTO,
+                createdAt: new Date()
+            }
+        })
     }
 
 }
