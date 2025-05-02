@@ -4,7 +4,7 @@ import { User } from '@prisma/client';
 
 @Injectable()
 export class HelloWorldService {
-    constructor(private readonly prisma: PrismaService) { }
+    constructor(private readonly prisma: PrismaService) {}
 
     async getHello(): Promise<User[]> {
         const users = await this.prisma.user.findMany();

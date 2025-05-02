@@ -4,10 +4,9 @@ import { User } from '@prisma/client';
 
 @Injectable()
 export class UserService {
-    constructor(private readonly prisma: PrismaService) { }
-
+    constructor(private readonly prisma: PrismaService) {}
 
     getUser(name: string): Promise<User> {
-       return this.prisma.user.findFirstOrThrow({where:{username:name}})
+        return this.prisma.user.findFirstOrThrow({ where: { username: name } });
     }
 }
