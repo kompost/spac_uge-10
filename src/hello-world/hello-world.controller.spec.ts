@@ -11,14 +11,15 @@ describe('HelloWorldController', () => {
             controllers: [HelloWorldController],
         }).compile();
 
-        controller = await module.get<HelloWorldController>(HelloWorldController);
+        controller =
+            await module.get<HelloWorldController>(HelloWorldController);
     });
 
     it('should be defined', () => {
         expect(controller).toBeDefined();
     });
-    it("test", () => {
-        const actual = controller.getHello("test");
-        expect(actual).toBe("Hello World!test")
-    })
+    it('test', () => {
+        const actual = controller.getHello('test');
+        expect(actual).toBe('Hello World!test');
+    });
 });

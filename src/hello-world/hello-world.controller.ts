@@ -5,7 +5,7 @@ import { User } from '@prisma/client';
 
 @Controller('hello-world')
 export class HelloWorldController {
-    constructor(private readonly hello: HelloWorldService) { }
+    constructor(private readonly hello: HelloWorldService) {}
 
     @Get(':name')
     @ApiParam({
@@ -19,14 +19,12 @@ export class HelloWorldController {
         status: 200,
         description: 'all gucci',
     })
-    async getHello(
-        @Param('name') name: string,
-    ): Promise<User[]> {
+    async getHello(@Param('name') name: string): Promise<User[]> {
         return await this.hello.getHello();
     }
-    
+
     @Get(':id')
-    getById(@Param() params:any) {
-        console.log(`id: ${params.id}`) 
+    getById(@Param() params: any) {
+        console.log(`id: ${params.id}`);
     }
 }

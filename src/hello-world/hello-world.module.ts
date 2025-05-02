@@ -8,4 +8,4 @@ import { PrismaModule } from 'src/prisma/prisma.module';
     providers: [HelloWorldService],
     controllers: [HelloWorldController],
 })
-export class HelloWorldModule { }
+export class HelloWorldModule {}
