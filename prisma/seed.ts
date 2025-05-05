@@ -36,14 +36,35 @@ async function main() {
         }
 
     })
-    const msg1 = await prisma.message.create({
+    await prisma.message.create({
         data: {
             User: { connect: john },
             Chatroom: { connect: chat },
             message: "test message 1"
         }
     })
-
+    await prisma.message.create({
+        data: {
+            User: { connect: doe },
+            Chatroom: { connect: chat },
+            message: "test message 2"
+        }
+    })
+    await prisma.message.create({
+        data: {
+            User: { connect: doe },
+            Chatroom: { connect: chat },
+            message: "test message 3"
+        }
+    })
+    await prisma.message.create({
+        data: {
+            User: { connect: john },
+            Chatroom: { connect: chat },
+            message: "test message 4"
+        }
+    })
+    
 
 }
 
