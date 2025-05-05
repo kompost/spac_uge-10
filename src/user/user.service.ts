@@ -4,9 +4,23 @@ import { User } from '@prisma/client';
 
 @Injectable()
 export class UserService {
-    constructor(private readonly prisma: PrismaService) {}
+    constructor(private readonly prisma: PrismaService) { }
 
     getUser(name: string): Promise<User> {
         return this.prisma.user.findFirstOrThrow({ where: { username: name } });
+    }
+
+    getUserById(id: string): Promise<User> {
+        return this.prisma.user.findFirstOrThrow({ where: { id } });
+    }
+
+    async validateUser(username: string, password: string): Promise<User | null> {
+        try {
+            const user = await this.getUser(username);
+            if (user.password !== password) return null;
+            return user;
+        } catch (error) {
+            return null;
+        }
     }
 }
