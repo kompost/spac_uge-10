@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Res } from '@nestjs/common';
+import { Body, Controller, Post, Put, Res } from '@nestjs/common';
 import { LoginDto } from './login.dto';
 import { AuthService } from './auth.service';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -28,5 +28,22 @@ export class AuthController {
         });
 
         return { message: 'Login successful' };
+    }
+
+    @Put('register')
+    @ApiBody({ type: LoginDto })
+    async register(
+        @Body() dto: LoginDto,
+        @Res({ passthrough: true }) response: Response,
+    ) {
+        try {
+            this.authService.register(dto);
+            this.login(dto, response);
+            return { message: 'registration successful, you are now loged in' };
+        } catch (error) {
+            return {
+                message: `Something went worng with the creation of the login\n${error.message}`,
+            };
+        }
     }
 }
