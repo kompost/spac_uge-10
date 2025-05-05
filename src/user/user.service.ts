@@ -9,4 +9,21 @@ export class UserService {
     getUser(name: string): Promise<User> {
         return this.prisma.user.findFirstOrThrow({ where: { username: name } });
     }
+
+    getUserById(id: string): Promise<User> {
+        return this.prisma.user.findFirstOrThrow({ where: { id } });
+    }
+
+    async validateUser(
+        username: string,
+        password: string,
+    ): Promise<User | null> {
+        try {
+            const user = await this.getUser(username);
+            if (user.password !== password) return null;
+            return user;
+        } catch (error) {
+            return null;
+        }
+    }
 }
