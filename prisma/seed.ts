@@ -1,5 +1,5 @@
-import { PrismaClient } from '@prisma/client';
-import { connect } from 'http2';
+import { PrismaClient, Role } from '@prisma/client';
+import { hash } from 'bcrypt';
 
 const prisma = new PrismaClient();
 
@@ -7,41 +7,64 @@ async function main() {
     await prisma.user.deleteMany()
     await prisma.chatroom.deleteMany()
     await prisma.message.deleteMany()
+    const saltRounds = 10
     const john = await prisma.user.create({
         data: {
             username: 'john',
-            password: 'Admin',
+            password: await hash('Admin', saltRounds),
+            role: Role.ADMIN
         },
     });
     const doe = await prisma.user.create({
         data: {
             username: 'doe',
-            password: 'test',
+            password: await hash('test', saltRounds),
         },
     });
 
     await prisma.user.create({
         data: {
             username: 'Alice',
-            password: 'test',
+            password: await hash('test2', saltRounds),
         },
     });
-    
+
     const chat = await prisma.chatroom.create({
-        data:{
-            name: "test", 
-            users: {connect:[john, doe]}
-        }
-        
-    })
-    const msg1 = await prisma.message.create({
         data: {
-            User: {connect:john},
-            Chatroom: {connect:chat},
+            name: "test",
+            users: { connect: [john, doe] }
+        }
+
+    })
+    await prisma.message.create({
+        data: {
+            User: { connect: john },
+            Chatroom: { connect: chat },
             message: "test message 1"
         }
     })
-
+    await prisma.message.create({
+        data: {
+            User: { connect: doe },
+            Chatroom: { connect: chat },
+            message: "test message 2"
+        }
+    })
+    await prisma.message.create({
+        data: {
+            User: { connect: doe },
+            Chatroom: { connect: chat },
+            message: "test message 3"
+        }
+    })
+    await prisma.message.create({
+        data: {
+            User: { connect: john },
+            Chatroom: { connect: chat },
+            message: "test message 4"
+        }
+    })
+    
 
 }
 
