@@ -19,8 +19,8 @@ export class ChatroomController {
     constructor(private readonly service: ChatroomService) {}
 
     @Get()
-    async getAllChatrooms() : Promise<Chatroom[]>{
-        return this.service.getAll()
+    async getAllChatrooms(): Promise<Chatroom[]> {
+        return this.service.getAll();
     }
     @Get(':id')
     async getById(@Param('id') id: string): Promise<ChatroomFullDTO> {

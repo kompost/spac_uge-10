@@ -10,7 +10,7 @@ import {
 @Injectable()
 export class ChatroomService {
     constructor(private readonly prisma: PrismaService) {}
-    
+
     getAll(): Promise<Chatroom[]> {
         return this.prisma.chatroom.findMany();
     }

@@ -1,14 +1,13 @@
 import { Module } from '@nestjs/common';
-import { AuthController } from './auth.controller';
-import { AuthService } from './auth.service';
+import { PrismaModule } from 'src/prisma/prisma.module';
+import { ChatGateway } from './events.gateway';
 import { UserModule } from 'src/user/user.module';
-import { ConfigService } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
-    imports: [UserModule],
-    controllers: [AuthController],
+    imports: [PrismaModule, UserModule, ConfigModule],
     providers: [
-        AuthService,
+        ChatGateway,
         {
             provide: 'JWT_TOKEN',
             useFactory: (configService: ConfigService) =>
@@ -16,5 +15,6 @@ import { ConfigService } from '@nestjs/config';
             inject: [ConfigService],
         },
     ],
+    controllers: [],
 })
-export class AuthModule {}
+export class EventModule {}
