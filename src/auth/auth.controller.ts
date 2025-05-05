@@ -9,6 +9,8 @@ import { Response } from 'express';
 export class AuthController {
     constructor(private readonly authService: AuthService) {}
 
+    readonly secure : boolean = (process.env.TOKEN_SECURE ?? false) as boolean
+
     @Post('login')
     @ApiBody({ type: LoginDto })
     @ApiOperation({ summary: 'Login to get an access token' })
@@ -22,7 +24,7 @@ export class AuthController {
 
         response.cookie('accessToken', token, {
             httpOnly: true,
-            secure: false, // TODO: set to true in production
+            secure: this.secure,
             sameSite: 'strict',
             maxAge: 2 * 60 * 60 * 1000,
         });
