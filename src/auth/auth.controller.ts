@@ -12,8 +12,6 @@ import { SignUpDto } from './signup.dto';
 export class AuthController {
     constructor(private readonly authService: AuthService) { }
 
-    readonly secure: boolean = (process.env.TOKEN_SECURE ?? false) as boolean
-
     @UseGuards(LocalAuthGuard)
     @Public()
     @Post('login')
@@ -38,11 +36,10 @@ export class AuthController {
     async register(@Body() dto: SignUpDto) {
         try {
             const newUser = await this.authService.register(dto);
-            await this.authService.login(newUser);
-            return { message: 'Registration successful, you are now loged in' };
+            return this.authService.login(newUser);
         } catch (error) {
             throw new HttpException(
-                `Something went worng with the creation of the login\n${error.message}`,
+                `Register error: ${error.message}`,
                 HttpStatus.NOT_ACCEPTABLE
             );
         }

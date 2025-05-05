@@ -33,8 +33,8 @@ export class AuthService {
     async register({ username, password }: SignUpDto) {
         const user = await this.users.getUser(username).catch((_) => null);
 
-        if (!user)
-            throw 'username allready in use';
+        if (user)
+            throw new Error('username allready in use');
 
         const newUser = await this.users.createNewUser(
             username,
