@@ -17,13 +17,13 @@ export class MessageController {
 
     @Get(':id')
     @ApiBearerAuth('access-token')
-    async getById(@Param() params: any): Promise<Message> {
+    async getById(@Param() id: string): Promise<Message> {
         console.log('woot is going on'); // TODO: remove
         try {
-            return this.service.getById(params.id);
+            return this.service.getById(id);
         } catch (error) {
             throw new HttpException(
-                `Message with ${params.id} does not exist\n${error.message}`,
+                `Message with ${id} does not exist\n${error.message}`,
                 404,
             );
         }
