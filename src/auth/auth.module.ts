@@ -38,6 +38,6 @@ import { JwtAuthGuard } from './jwt.guard';
             inject: [ConfigService],
         },
     ],
-    exports: [AuthService],
+    exports: [AuthService, JwtStrategy],
 })
-export class AuthModule {}
+export class AuthModule { }
