@@ -54,12 +54,13 @@ export class ChatGateway {
         @MessageBody() roomId: string,
         @ConnectedSocket() client: Socket,
     ) {
+        
         const room = await this.chatroomService.getById(roomId).catch(_ => null);
         if (!room) {
             client.emit('error', 'Room not found');
             return;
         }
-
+        console.log("Im also here!", roomId)
         client.join(roomId);
         client.emit('joinedRoom', room);
     }
@@ -84,12 +85,13 @@ export class ChatGateway {
         @MessageBody() payload: { userId: string, roomId: string; message: string },
         @ConnectedSocket() client: Socket,
     ) {
+        console.log(payload)
         await this.messageService.addMessage({
             chatroomId: payload.roomId,
             userId: payload.userId,
             message: payload.message,
         });
-
+        console.log("Im here!")
         client.to(payload.roomId).emit('chatToClient', {
             sender: client.id,
             message: payload.message,
