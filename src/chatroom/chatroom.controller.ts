@@ -12,17 +12,20 @@ import {
     ChatroomWithMessagesDTO,
     ChatroomWithUsersDTO,
 } from './chatroom.dtos';
-import { ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
 
 @Controller('chatroom')
 export class ChatroomController {
     constructor(private readonly service: ChatroomService) {}
 
     @Get()
+    @ApiBearerAuth('access-token')
     async getAllChatrooms(): Promise<Chatroom[]> {
         return this.service.getAll();
     }
+
     @Get(':id')
+    @ApiBearerAuth('access-token')
     async getById(@Param('id') id: string): Promise<ChatroomFullDTO> {
         try {
             const chatroom: ChatroomFullDTO =
@@ -35,7 +38,9 @@ export class ChatroomController {
             );
         }
     }
+
     @Get('getMessages/:id')
+    @ApiBearerAuth('access-token')
     async getChatroomMessages(@Param('id') id: string): Promise<Message[]> {
         try {
             const chatroom: ChatroomWithMessagesDTO =
@@ -48,7 +53,9 @@ export class ChatroomController {
             );
         }
     }
+
     @Get('getUsers/:id')
+    @ApiBearerAuth('access-token')
     async getChatroomUsers(@Param('id') id: string): Promise<User[]> {
         try {
             const chatroom: ChatroomWithUsersDTO =

@@ -4,10 +4,11 @@ import {
     MessageBody,
     ConnectedSocket,
 } from '@nestjs/websockets';
-import { Socket, Server } from 'socket.io';
+import { Socket } from 'socket.io';
 import { UserService } from 'src/user/user.service';
-import * as jwt from 'jsonwebtoken';
-import { Inject } from '@nestjs/common';
+import { JwtStrategy } from 'src/auth/jwt.strategy';
+import { ChatroomService } from 'src/chatroom/chatroom.service';
+import { MessageService } from 'src/message/message.service';
 
 @WebSocketGateway({ cors: true })
 export class ChatGateway {
@@ -16,33 +17,26 @@ export class ChatGateway {
 
     constructor(
         private readonly user: UserService,
-        @Inject('JWT_TOKEN') private readonly jwtToken: string,
-    ) {}
+        private readonly jwtStrategy: JwtStrategy,
+        private readonly chatroomService: ChatroomService,
+        private readonly messageService: MessageService,
+    ) { }
+
 
     async handleConnection(client: Socket) {
         try {
-            // const token = client.handshake.auth?.token;
-            //
-            // const payload = await this.verifyToken(token);
-            //
-            // const user = await this.user.getUserById(payload.sub);
-            //
-            // if (!user) throw new Error('User not found');
+            const token = client.handshake.auth?.token;
+            const payload = await this.jwtStrategy.validate(token);
+            const user = await this.user.getUserById(payload.username);
 
-            // this.users.set(client.id, { userId: user.id, username: user.username });
+            if (!user) throw new Error('User not found');
 
-            this.users.set(client.id, { userId: 'halli', username: 'halloj' });
+            this.users.set(client.id, { userId: user.id, username: user.username });
 
-            // console.log(`User ${user.username} connected`);
+            console.log(`User ${user.username} connected`);
         } catch (err) {
-            console.error('Auth failed:', err.message);
             client.disconnect();
         }
-    }
-
-    private async verifyToken(token: string): Promise<{ sub: string }> {
-        // Example using jsonwebtoken directly
-        return jwt.verify(token, this.jwtToken) as { sub: string };
     }
 
     handleDisconnect(client: Socket) {
@@ -56,29 +50,47 @@ export class ChatGateway {
     }
 
     @SubscribeMessage('joinRoom')
-    handleJoinRoom(
-        @MessageBody() room: string,
+    async handleJoinRoom(
+        @MessageBody() roomId: string,
         @ConnectedSocket() client: Socket,
     ) {
-        client.join(room);
+        const room = await this.chatroomService.getById(roomId).catch(_ => null);
+        if (!room) {
+            client.emit('error', 'Room not found');
+            return;
+        }
+
+        client.join(roomId);
         client.emit('joinedRoom', room);
     }
 
     @SubscribeMessage('leaveRoom')
-    handleLeaveRoom(
-        @MessageBody() room: string,
+    async handleLeaveRoom(
+        @MessageBody() roomId: string,
         @ConnectedSocket() client: Socket,
     ) {
-        client.leave(room);
-        client.emit('leftRoom', room);
+        const room = await this.chatroomService.getById(roomId).catch(_ => null);
+        if (!room) {
+            client.emit('error', 'Room not found');
+            return;
+        }
+
+        client.leave(roomId);
+        client.emit('leftRoom', roomId);
     }
 
     @SubscribeMessage('chatToServer')
-    handleMessage(
-        @MessageBody() payload: { room: string; message: string },
+    async handleMessage(
+        @MessageBody() payload: { userId: string, roomId: string; message: string },
         @ConnectedSocket() client: Socket,
     ) {
-        client.to(payload.room).emit('chatToClient', {
+        await this.messageService.addMessage({
+            chatroomId: payload.roomId,
+            userId: payload.userId,
+            message: payload.message,
+        });
+
+        client.to(payload.roomId).emit('chatToClient', {
             sender: client.id,
             message: payload.message,
         });

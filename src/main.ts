@@ -22,7 +22,10 @@ async function bootstrap() {
         .setDescription('The backend API description')
         .setVersion('0.1')
         .addTag('Main API')
-        .addCookieAuth('accessToken')
+        .addBearerAuth(
+            { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' },
+            'access-token',
+        )
         .build();
 
     const rootDocument = SwaggerModule.createDocument(app, rootConfig);

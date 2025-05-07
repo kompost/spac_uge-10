@@ -1,6 +1,11 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { HelloWorldService } from './hello-world.service';
-import { ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
+import {
+    ApiBearerAuth,
+    ApiOperation,
+    ApiParam,
+    ApiResponse,
+} from '@nestjs/swagger';
 import { User } from '@prisma/client';
 
 @Controller('hello-world')
@@ -8,6 +13,7 @@ export class HelloWorldController {
     constructor(private readonly hello: HelloWorldService) {}
 
     @Get(':name')
+    @ApiBearerAuth('access-token')
     @ApiParam({
         name: 'name',
         type: String,
@@ -24,6 +30,7 @@ export class HelloWorldController {
     }
 
     @Get(':id')
+    @ApiBearerAuth('access-token')
     getById(@Param() params: any) {
         console.log(`id: ${params.id}`);
     }

@@ -2,19 +2,21 @@ import { Module } from '@nestjs/common';
 import { PrismaModule } from 'src/prisma/prisma.module';
 import { ChatGateway } from './events.gateway';
 import { UserModule } from 'src/user/user.module';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { AuthModule } from 'src/auth/auth.module';
+import { MessageModule } from 'src/message/message.module';
+import { ChatroomModule } from 'src/chatroom/chatroom.module';
 
 @Module({
-    imports: [PrismaModule, UserModule, ConfigModule],
+    imports: [
+        PrismaModule,
+        UserModule,
+        AuthModule,
+        MessageModule,
+        ChatroomModule,
+    ],
     providers: [
         ChatGateway,
-        {
-            provide: 'JWT_TOKEN',
-            useFactory: (configService: ConfigService) =>
-                configService.get<string>('JWT_SECRET'),
-            inject: [ConfigService],
-        },
     ],
     controllers: [],
 })
-export class EventModule {}
+export class EventModule { }
