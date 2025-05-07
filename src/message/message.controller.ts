@@ -18,7 +18,7 @@ export class MessageController {
     @Get(':id')
     @ApiBearerAuth('access-token')
     async getById(@Param() params: any): Promise<Message> {
-        console.log('woot is going on');
+        console.log('woot is going on'); // TODO: remove
         try {
             return this.service.getById(params.id);
         } catch (error) {
