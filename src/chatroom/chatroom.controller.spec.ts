@@ -11,7 +11,7 @@ import { describe } from 'node:test';
 describe('ChatroomController', () => {
     let controller: ChatroomController;
 
-    let mockUsers: User[] = [
+    const mockUsers: User[] = [
         { id: '0', username: 'user 0', password: '', role: Role.USER },
         { id: '1', username: 'user 1', password: '', role: Role.USER },
         { id: '2', username: 'user 2', password: '', role: Role.USER },
@@ -19,7 +19,7 @@ describe('ChatroomController', () => {
         { id: '4', username: 'user 4', password: '', role: Role.USER },
         { id: '5', username: 'user 5', password: '', role: Role.USER },
     ]
-    let mockChatrooms = [
+    const mockChatrooms = [
         {
             name: "name0", id: "0", users: [mockUsers[0], mockUsers[1]], messages: [
                 { id: '0', message: 'message 1', userId: '0', chatroomId: '0', createdAt: new Date() },
@@ -46,7 +46,7 @@ describe('ChatroomController', () => {
         },
 
     ]
-    let mockChatroomServise = {
+    const mockChatroomServise = {
         getAll: (): Chatroom[] => mockChatrooms,
         getChatroomFull: (id: string): ChatroomFullDTO => {
             const room = mockChatrooms.find(chatroom => chatroom.id == id)
