@@ -81,17 +81,24 @@ export class ChatGateway {
 
     @SubscribeMessage('chatToServer')
     async handleMessage(
-        @MessageBody() payload: { userId: string, roomId: string; message: string },
+        @MessageBody() payload: { roomId: string; message: string },
         @ConnectedSocket() client: Socket,
     ) {
+        const userId = this.users.get(client.id)?.userId;
+        const username = this.users.get(client.id)?.username;
+        if (!username || !userId) {
+            client.emit('error', 'User not found');
+            return;
+        }
+
         await this.messageService.addMessage({
             chatroomId: payload.roomId,
-            userId: payload.userId,
+            userId,
             message: payload.message,
         });
 
         client.to(payload.roomId).emit('chatToClient', {
-            sender: client.id,
+            sender: username,
             message: payload.message,
         });
     }
