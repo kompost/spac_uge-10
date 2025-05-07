@@ -9,12 +9,20 @@
   <h1>Socket.IO Chat</h1>
   <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
   <script>
-    const socket = io('http://localhost:3000', {
+    const socket1 = io('http://localhost:3000', {
       auth: {
-        token: localStorage.getItem('authToken')
+        token: localStorage.getItem('authToken1')
       },
     });
 
+    const socket2 = io('http://localhost:3000', {
+      auth: {
+        token: localStorage.getItem('authToken2')
+      },
+    });
+
+    window.socket1 = socket1;
+    window.socket2 = socket2;
     async function login(username, password) {
       try {
         const response = await fetch('/api/v1/auth/login', {
@@ -32,30 +40,33 @@
         const data = await response.json();
 
         // Store the token (e.g., in localStorage or in memory)
-        localStorage.setItem('authToken', data.access_token);
-
+        // localStorage.setItem('authToken', data.access_token);
+        return data.access_token;
       } catch (err) {
         console.error('Error logging in:', err);
       }
     }
 
-    login('mufasa', 'mufasa')
-      .then(() => {
-        socket.emit('joinRoom', 'room1');
-        socket.on('joinedRoom', (room) => {
+    login('test1', 'test')
+      .then((auth) => {
+        localStorage.setItem('authToken1', auth);
+        console.log('Logged in as test1:', auth);
+
+        socket1.emit('joinRoom', 'cma6iufzj0000q0onq2rcvp4q');
+        socket1.on('joinedRoom', (room) => {
           console.log('Joined', room);
         });
 
-        socket.emit('chatToServer', {
-          room: 'room1',
-          message: 'Hello from HTML!',
+        socket1.emit('chatToServer', {
+          roomId: 'cma6iufzj0000q0onq2rcvp4q',
+          message: 'Hello from socket 1',
         });
 
-        socket.on('chatToClient', (data) => {
+        socket1.on('chatToClient', (data) => {
           console.log(`${data.sender}: ${data.message}`);
         });
 
-        socket.on('error', (error) => {
+        socket1.on('error', (error) => {
           console.error('Error from server:', error);
         });
       })
@@ -63,6 +74,32 @@
         console.error('Error in login function:', err);
       });
 
+    login('test2', 'test')
+      .then((auth) => {
+        localStorage.setItem('authToken2', auth);
+
+        console.log('Logged in as test2:', auth);
+        socket2.emit('joinRoom', 'cma6iufzj0000q0onq2rcvp4q');
+        socket2.on('joinedRoom', (room) => {
+          console.log('Joined', room);
+        });
+
+        socket2.emit('chatToServer', {
+          roomId: 'cma6iufzj0000q0onq2rcvp4q',
+          message: 'Hello from socket 2',
+        });
+
+        socket2.on('chatToClient', (data) => {
+          console.log(`${data.sender}: ${data.message}`);
+        });
+
+        socket2.on('error', (error) => {
+          console.error('Error from server:', error);
+        });
+      })
+      .catch((err) => {
+        console.error('Error in login function:', err);
+      });
 
   </script>
 </body>

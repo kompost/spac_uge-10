@@ -14,7 +14,10 @@ export class UserService {
     }
 
     async getUserById(id: string): Promise<User> {
-        return this.prisma.user.findFirstOrThrow({ where: { id } });
+        return this.prisma.user.findFirstOrThrow({ where: { id } }).catch((err) => {
+            console.log('error', err);
+            throw new Error('User not found');
+        });
     }
 
     async createNewUser(username: string, password: string): Promise<User> {

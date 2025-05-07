@@ -9,6 +9,7 @@ import { UserService } from 'src/user/user.service';
 import { JwtStrategy } from 'src/auth/jwt.strategy';
 import { ChatroomService } from 'src/chatroom/chatroom.service';
 import { MessageService } from 'src/message/message.service';
+import { JwtService } from '@nestjs/jwt';
 
 @WebSocketGateway({ cors: true })
 export class ChatGateway {
@@ -20,14 +21,17 @@ export class ChatGateway {
         private readonly jwtStrategy: JwtStrategy,
         private readonly chatroomService: ChatroomService,
         private readonly messageService: MessageService,
+        private readonly jwtService: JwtService,
     ) { }
 
 
     async handleConnection(client: Socket) {
         try {
             const token = client.handshake.auth?.token;
-            const payload = await this.jwtStrategy.validate(token);
-            const user = await this.user.getUserById(payload.username);
+            const payload = this.jwtService.verify(token, {
+                secret: process.env.JWT_SECRET,
+            })
+            const user = await this.user.getUserById(payload.sub);
 
             if (!user) throw new Error('User not found');
 
