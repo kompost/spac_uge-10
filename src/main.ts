@@ -7,12 +7,15 @@ async function bootstrap() {
     const app = await NestFactory.create(AppModule);
     app.useGlobalPipes(new ValidationPipe());
 
-    
+    app.enableCors({
+        origin: '*',
+        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+        preflightContinue: false,
+        optionsSuccessStatus: 204,
+    });
 
     const API_PREFIX = 'api/v1';
     app.setGlobalPrefix(API_PREFIX);
-
-    app.enableCors();
 
     const rootConfig = new DocumentBuilder()
         .setTitle('Specilisterne Chat App API')

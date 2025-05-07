@@ -28,7 +28,7 @@ export class ChatGateway {
             const token = client.handshake.auth?.token;
             const payload = await this.jwtStrategy.validate(token);
             const user = await this.user.getUserById(payload.username);
-            console.log(user)
+
             if (!user) throw new Error('User not found');
 
             this.users.set(client.id, { userId: user.id, username: user.username });
