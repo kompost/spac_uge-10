@@ -5,7 +5,7 @@ import { CreateMessageDTO } from './message.dtos';
 
 @Injectable()
 export class MessageService {
-    constructor(private readonly prisma: PrismaService) {}
+    constructor(private readonly prisma: PrismaService) { }
 
     async getById(id: string): Promise<Message> {
         return await this.prisma.message.findFirstOrThrow({
@@ -19,11 +19,11 @@ export class MessageService {
     }
 
     async addMessage(createMessageDTO: CreateMessageDTO) {
-        this.prisma.message.create({
+        const message = await this.prisma.message.create({
             data: {
                 ...createMessageDTO,
-                createdAt: new Date(),
             },
         });
+        return message;
     }
 }

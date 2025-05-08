@@ -49,26 +49,44 @@
 
     login('test1', 'test')
       .then((auth) => {
+        console.log('Auth token:', auth);
         localStorage.setItem('authToken1', auth);
-        console.log('Logged in as test1:', auth);
-
-        socket1.emit('joinRoom', 'cma6iufzj0000q0onq2rcvp4q');
-        socket1.on('joinedRoom', (room) => {
-          console.log('Joined', room);
-        });
-
-        socket1.emit('chatToServer', {
-          roomId: 'cma6iufzj0000q0onq2rcvp4q',
-          message: 'Hello from socket 1',
-        });
-
-        socket1.on('chatToClient', (data) => {
-          console.log(`${data.sender}: ${data.message}`);
-        });
 
         socket1.on('error', (error) => {
           console.error('Error from server:', error);
         });
+        socket1.on('disconnect', (reason) => {
+          console.log('Disconnected:', reason);
+        });
+        socket1.on('chatToClient', (data) => {
+          console.log(`${data.sender}: ${data.message}`);
+        });
+        socket1.on('joinedRoom', (room) => {
+          console.log('Joined', room);
+        });
+
+        socket1.emit('joinRoom', 'cma6iufzj0000q0onq2rcvp4q');
+
+        setTimeout(() => {
+          socket1.emit('chatToServer', {
+            roomId: 'cma6iufzj0000q0onq2rcvp4q',
+            message: 'Is this the Krusty Krab?',
+          });
+        }, 1000);
+
+        setTimeout(() => {
+          socket1.emit('chatToServer', {
+            roomId: 'cma6iufzj0000q0onq2rcvp4q',
+            message: 'Is this the Krusty Krab?',
+          });
+        }, 3000);
+
+        setTimeout(() => {
+          socket1.emit('chatToServer', {
+            roomId: 'cma6iufzj0000q0onq2rcvp4q',
+            message: 'Is this the Krusty Krab?',
+          });
+        }, 5000);
       })
       .catch((err) => {
         console.error('Error in login function:', err);
@@ -76,26 +94,46 @@
 
     login('test2', 'test')
       .then((auth) => {
+        console.log('Auth token:', auth);
         localStorage.setItem('authToken2', auth);
-
-        console.log('Logged in as test2:', auth);
-        socket2.emit('joinRoom', 'cma6iufzj0000q0onq2rcvp4q');
-        socket2.on('joinedRoom', (room) => {
-          console.log('Joined', room);
-        });
-
-        socket2.emit('chatToServer', {
-          roomId: 'cma6iufzj0000q0onq2rcvp4q',
-          message: 'Hello from socket 2',
-        });
 
         socket2.on('chatToClient', (data) => {
           console.log(`${data.sender}: ${data.message}`);
         });
-
         socket2.on('error', (error) => {
           console.error('Error from server:', error);
         });
+        socket2.on('disconnect', (reason) => {
+          console.log('Disconnected:', reason);
+        });
+        socket2.on('joinedRoom', (room) => {
+          console.log('Joined', room);
+        });
+
+        socket2.emit('joinRoom', 'cma6iufzj0000q0onq2rcvp4q');
+
+        setTimeout(() => {
+          socket2.emit('chatToServer', {
+            roomId: 'cma6iufzj0000q0onq2rcvp4q',
+            message: 'No! This is Patrick!',
+          });
+        }, 1500);
+
+        setTimeout(() => {
+          socket2.emit('chatToServer', {
+            roomId: 'cma6iufzj0000q0onq2rcvp4q',
+            message: 'No! THIS IS PATRICK!',
+          });
+        }, 3500);
+
+        setTimeout(() => {
+          socket2.emit('chatToServer', {
+            roomId: 'cma6iufzj0000q0onq2rcvp4q',
+            message: 'NO!!! THIS IS PATRICK!!!…I’m not a Krusty Krab.',
+          });
+        }, 5500);
+
+
       })
       .catch((err) => {
         console.error('Error in login function:', err);

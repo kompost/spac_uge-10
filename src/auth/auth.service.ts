@@ -47,4 +47,12 @@ export class AuthService {
         const { password: _, ...safeUser } = newUser;
         return safeUser;
     }
+
+    async getUserById(id: string) {
+        const user = await this.users.getUserById(id).catch((_) => null);
+        if (!user) return null;
+
+        const { password: _, ...safeUser } = user;
+        return safeUser;
+    }
 }

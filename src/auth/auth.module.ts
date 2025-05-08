@@ -9,20 +9,17 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
 import { LocalStrategy } from './local.strategy';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './jwt.guard';
+import { AuthTokenService } from './auth-token.service';
 
 @Module({
     imports: [
         UserModule,
         PassportModule,
         JwtModule.registerAsync({
-            useFactory: async (configService: ConfigService) => {
-                const secreto = configService.get<string>('JWT_SECRET');
-                console.log('this is the secret', secreto);
-                return {
-                    secret: secreto,
-                    signOptions: { expiresIn: '2h' },
-                }
-            },
+            useFactory: async (configService: ConfigService) => ({
+                secret: configService.get<string>('JWT_SECRET'),
+                signOptions: { expiresIn: '2h' },
+            }),
             inject: [ConfigService],
         }),
     ],
@@ -31,6 +28,7 @@ import { JwtAuthGuard } from './jwt.guard';
         AuthService,
         LocalStrategy,
         JwtService,
+        AuthTokenService,
         JwtStrategy,
         {
             provide: APP_GUARD,
@@ -43,6 +41,6 @@ import { JwtAuthGuard } from './jwt.guard';
             inject: [ConfigService],
         },
     ],
-    exports: [AuthService, JwtStrategy, JwtService],
+    exports: [AuthService, AuthTokenService],
 })
 export class AuthModule { }
