@@ -26,7 +26,10 @@ export class AuthService {
     async login(user: Omit<User, 'password'>) {
         const payload = { username: user.username, sub: user.id };
         return {
-            access_token: this.jwtService.sign(payload),
+            access_token: this.jwtService.sign(payload, {
+                secret: process.env.JWT_SECRET,
+                expiresIn: '2h',
+            }),
         };
     }
 
@@ -42,6 +45,14 @@ export class AuthService {
         );
 
         const { password: _, ...safeUser } = newUser;
+        return safeUser;
+    }
+
+    async getUserById(id: string) {
+        const user = await this.users.getUserById(id).catch((_) => null);
+        if (!user) return null;
+
+        const { password: _, ...safeUser } = user;
         return safeUser;
     }
 }
