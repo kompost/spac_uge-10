@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { User } from '@prisma/client';
 import { hash } from 'bcrypt';
 
@@ -8,9 +8,10 @@ export class UserService {
     constructor(private readonly prisma: PrismaService) { }
 
     async getUser(name: string): Promise<User> {
-        return await this.prisma.user.findFirstOrThrow({
+        const tmp = await this.prisma.user.findFirstOrThrow({
             where: { username: name },
         });
+        return tmp
     }
 
     async getUserById(id: string): Promise<User> {
