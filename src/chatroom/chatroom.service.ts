@@ -40,10 +40,17 @@ export class ChatroomService {
         return messages;
     }
 
-    async getChatroomUsers(id: string): Promise<ChatroomWithUsersDTO> {
+    async getChatroomUsers(id: string) {
         return await this.prisma.chatroom.findFirstOrThrow({
             where: { id },
-            include: { users: true },
+            include: {
+                users: {
+                    select: {
+                        id: true,
+                        username: true,
+                    },
+                },
+            },
         });
     }
 }
