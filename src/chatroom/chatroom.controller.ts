@@ -10,13 +10,12 @@ import { Chatroom, Message, User } from '@prisma/client';
 import {
     ChatroomFullDTO,
     ChatroomWithMessagesDTO,
-    ChatroomWithUsersDTO,
 } from './chatroom.dtos';
 import { ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
 
 @Controller('chatroom')
 export class ChatroomController {
-    constructor(private readonly service: ChatroomService) {}
+    constructor(private readonly service: ChatroomService) { }
 
     @Get()
     @ApiBearerAuth('access-token')
@@ -56,9 +55,9 @@ export class ChatroomController {
 
     @Get('getUsers/:id')
     @ApiBearerAuth('access-token')
-    async getChatroomUsers(@Param('id') id: string): Promise<User[]> {
+    async getChatroomUsers(@Param('id') id: string) {
         try {
-            const chatroom: ChatroomWithUsersDTO =
+            const chatroom =
                 await this.service.getChatroomUsers(id);
             return chatroom.users;
         } catch (error) {
