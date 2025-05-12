@@ -31,7 +31,15 @@ export class ChatroomService {
     async getChatroomMessages(id: string): Promise<ChatroomWithMessagesDTO> {
         return await this.prisma.chatroom.findFirstOrThrow({
             where: { id },
-            include: { messages: true },
+            include: {
+                messages: true,
+                users: {
+                    select: {
+                        id: true,
+                        username: true,
+                    },
+                },
+            },
         });
     }
 
