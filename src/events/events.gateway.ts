@@ -96,6 +96,7 @@ export class ChatGateway {
 
         client.to(payload.roomId).emit('chatToClient', {
             sender: clientInfo.username,
+            roomId: payload.roomId,
             message: payload.message,
         });
     }

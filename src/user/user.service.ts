@@ -10,6 +10,9 @@ export class UserService {
     async getUser(name: string): Promise<User> {
         const tmp = await this.prisma.user.findFirstOrThrow({
             where: { username: name },
+            include: { 
+                chatrooms: true
+            }
         });
         return tmp
     }
