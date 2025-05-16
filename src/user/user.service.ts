@@ -10,7 +10,7 @@ export class UserService {
     async getUser(name: string): Promise<User> {
         const tmp = await this.prisma.user.findFirstOrThrow({
             where: { username: name },
-            include: { 
+            include: {
                 chatrooms: true
             }
         });
@@ -34,6 +34,17 @@ export class UserService {
                 password: hasedPassword,
             },
         });
+
+        await this.prisma.chatroom.update({
+            where: { name: 'general' },
+            data: {
+                users: {
+                    connect: {
+                        id: newUser.id,
+                    }
+                }
+            }
+        })
 
         return newUser;
     }

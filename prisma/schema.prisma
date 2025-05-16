@@ -19,18 +19,18 @@ enum Role {
 }
 
 model User {
-  id        String       @id @default(cuid()) 
+  id        String       @id @default(cuid())
   username  String       @unique
   password  String
   role      Role         @default(USER)
-  chatrooms Chatroom[]
+  chatrooms Chatroom[]   @relation("UserChatrooms")
   friends   Friendship[] @relation("UserFriends1")
   friendOf  Friendship[] @relation("UserFriends2")
   Message   Message[]
 }
 
 model Friendship {
-  user1   User   @relation("UserFriends1", fields: [user1Id], references: [id],onDelete: Cascade)
+  user1   User   @relation("UserFriends1", fields: [user1Id], references: [id], onDelete: Cascade)
   user1Id String
   user2   User   @relation("UserFriends2", fields: [user2Id], references: [id], onDelete: Cascade)
   user2Id String
@@ -41,15 +41,15 @@ model Friendship {
 
 model Chatroom {
   id       String    @id @default(cuid())
-  name     String
-  messages Message[] 
-  users    User[]
+  name     String    @unique
+  messages Message[]
+  users    User[]    @relation("UserChatrooms")
 }
 
 model Message {
   id         String   @id @default(cuid())
-  User       User?     @relation(fields: [userId], references: [id])
-  userId     String?   
+  User       User?    @relation(fields: [userId], references: [id])
+  userId     String?
   Chatroom   Chatroom @relation(fields: [chatroomId], references: [id], onDelete: Cascade)
   chatroomId String
   message    String
